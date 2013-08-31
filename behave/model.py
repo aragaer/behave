@@ -1023,6 +1023,7 @@ class Step(BasicStatement, Replayable):
                 for formatter in runner.formatters:
                     formatter.result(self)
 
+            self.error_message = "No match for step"
             return False
 
         keep_going = True

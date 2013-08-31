@@ -337,6 +337,17 @@ Then a step passes
             self.context.feature = None
             self.context.execute_steps(doc)
 
+    def test_execute_steps_called_with_undefined_substep(self):
+        doc = u'''
+Given a step passes
+Then a thing happens
+'''.lstrip()
+        with patch('behave.step_registry.registry', self.step_registry):
+            try:
+                result = self.context.execute_steps(doc)
+            except AssertionError, e:  # -- PY26-CLEANUP-MARK
+                ok_("Sub-step failed: Then a thing happens" in str(e))
+                ok_("Substep info: No match for step" in str(e))
 
 class TestRunner(object):
     def test_load_hooks_execfiles_hook_file(self):
